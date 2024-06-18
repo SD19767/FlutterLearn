@@ -9,44 +9,60 @@ graph TD
     A --> C[Route Management\n路由管理]
     A --> D[Dependency Injection\n依賴注入]
     A --> E[Other Features\n其他功能]
-    
-    B --> B1[GetBuilder\n高效且易用，僅當需要更新時才重建]
-    B --> B2[GetX\n反應式狀態管理，可以自動追踪變量的變化並更新 UI]
-    B --> B3[Obx\n反應式狀態管理，可以自動追踪變量的變化並更新 UI]
-    
-    C --> C1[Get.to\n導航到新頁面]
-    C --> C2[Get.off\n導航並關閉當前頁面]
-    C --> C3[Get.offAll\n導航並關閉所有先前的頁面]
-    C --> C4[Get.back\n返回上一頁]
-    
-    D --> D1[Get.put\n將實例注入到依賴中]
-    D --> D2[Get.lazyPut\n當需要時才創建實例]
-    D --> D3[Get.find\n獲取已經注入的實例]
-    
-    E --> E1[Get.snackbar\n快速顯示通知]
-    E --> E2[Get.dialog\n顯示對話框]
-    E --> E3[Get.bottomSheet\n顯示底部抽屜]
-    E --> E4[GetConnect\n用於進行 HTTP 請求和 websocket 連接]
 
     style A fill:#4CAF50,stroke:#333,stroke-width:2px,font-size:16px,color:#fff;
     style B fill:#8BC34A,stroke:#333,stroke-width:2px,font-size:14px;
     style C fill:#FFC107,stroke:#333,stroke-width:2px,font-size:14px;
     style D fill:#00BCD4,stroke:#333,stroke-width:2px,font-size:14px;
     style E fill:#E91E63,stroke:#333,stroke-width:2px,font-size:14px;
+```
 
+```mermaid
+graph TD
+    B[State Management\n狀態管理] --> B1[GetBuilder\n高效且易用，僅當需要更新時才重建]
+    B --> B2[GetX\n反應式狀態管理，可以自動追踪變量的變化並更新 UI]
+    B --> B3[Obx\n反應式狀態管理，可以自動追踪變量的變化並更新 UI]
+
+    style B fill:#8BC34A,stroke:#333,stroke-width:2px,font-size:14px;
     style B1 fill:#8BC34A,stroke:#333,stroke-width:1px;
     style B2 fill:#8BC34A,stroke:#333,stroke-width:1px;
     style B3 fill:#8BC34A,stroke:#333,stroke-width:1px;
+```
 
+```mermaid
+graph TD
+    C[Route Management\n路由管理] --> C1[Get.to\n導航到新頁面]
+    C --> C2[Get.off\n導航並關閉當前頁面]
+    C --> C3[Get.offAll\n導航並關閉所有先前的頁面]
+    C --> C4[Get.back\n返回上一頁]
+
+    style C fill:#FFC107,stroke:#333,stroke-width:2px,font-size:14px;
     style C1 fill:#FFC107,stroke:#333,stroke-width:1px;
     style C2 fill:#FFC107,stroke:#333,stroke-width:1px;
     style C3 fill:#FFC107,stroke:#333,stroke-width:1px;
     style C4 fill:#FFC107,stroke:#333,stroke-width:1px;
+```
 
+```mermaid
+graph TD
+    D[Dependency Injection\n依賴注入] --> D1[Get.put\n將實例注入到依賴中]
+    D --> D2[Get.lazyPut\n當需要時才創建實例]
+    D --> D3[Get.find\n獲取已經注入的實例]
+
+    style D fill:#00BCD4,stroke:#333,stroke-width:2px,font-size:14px;
     style D1 fill:#00BCD4,stroke:#333,stroke-width:1px;
     style D2 fill:#00BCD4,stroke:#333,stroke-width:1px;
     style D3 fill:#00BCD4,stroke:#333,stroke-width:1px;
+```
 
+```mermaid
+graph TD
+    E[Other Features\n其他功能] --> E1[Get.snackbar\n快速顯示通知]
+    E --> E2[Get.dialog\n顯示對話框]
+    E --> E3[Get.bottomSheet\n顯示底部抽屜]
+    E --> E4[GetConnect\n用於進行 HTTP 請求和 websocket 連接]
+
+    style E fill:#E91E63,stroke:#333,stroke-width:2px,font-size:14px;
     style E1 fill:#E91E63,stroke:#333,stroke-width:1px;
     style E2 fill:#E91E63,stroke:#333,stroke-width:1px;
     style E3 fill:#E91E63,stroke:#333,stroke-width:1px;
