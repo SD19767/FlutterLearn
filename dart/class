@@ -1,0 +1,154 @@
+以下是 Dart 和 Swift 在類別和面向對象編程（OOP）部分的不同之處，並附上中文補充說明：
+
+### 定義類別
+
+**Dart:**
+
+```dart
+class User {
+  int id = 0;
+  String name = '';
+}
+```
+
+**Swift:**
+
+```swift
+class User {
+  var id: Int = 0
+  var name: String = ""
+}
+```
+
+**不同點**：Dart 使用 `int` 和 `String` 來定義屬性類型，而 Swift 使用 `Int` 和 `String`。此外，Swift 使用 `var` 關鍵字來定義變數。
+
+### 創建類的實例
+
+**Dart:**
+
+```dart
+final user = User();
+```
+
+**Swift:**
+
+```swift
+let user = User()
+```
+
+**不同點**：Dart 使用 `final` 關鍵字來創建不可變變數，而 Swift 使用 `let`。
+
+### 設置屬性值
+
+**Dart:**
+
+```dart
+user.name = 'Ray';
+user.id = 42;
+```
+
+**Swift:**
+
+```swift
+user.name = "Ray"
+user.id = 42
+```
+
+**不同點**：Dart 和 Swift 的語法非常相似，但 Swift 使用雙引號來包裹字符串。
+
+### 打印物件
+
+**Dart:**
+
+```dart
+print(user);
+```
+
+**Swift:**
+
+```swift
+print(user)
+```
+
+要在 Swift 中實現自定義的打印輸出，需要覆寫 `description` 屬性：
+
+```swift
+class User: CustomStringConvertible {
+  var id: Int = 0
+  var name: String = ""
+
+  var description: String {
+    return "User(id: \(id), name: \(name))"
+  }
+}
+```
+
+**不同點**：Dart 覆寫 `toString` 方法，而 Swift 通過實現 `CustomStringConvertible` 協議並定義 `description` 屬性來自定義打印輸出。
+
+### JSON 序列化
+
+**Dart:**
+
+```dart
+String toJson() {
+  return '{"id":$id,"name":"$name"}';
+}
+```
+
+**Swift:**
+
+在 Swift 中，可以使用 `Codable` 協議來實現 JSON 序列化：
+
+```swift
+class User: Codable {
+  var id: Int = 0
+  var name: String = ""
+}
+
+let encoder = JSONEncoder()
+if let jsonData = try? encoder.encode(user),
+   let jsonString = String(data: jsonData, encoding: .utf8) {
+    print(jsonString)
+}
+```
+
+**不同點**：Dart 手動實現 JSON 序列化，而 Swift 使用內建的 `Codable` 協議來自動處理序列化和反序列化。
+
+### 封裝（Encapsulation）
+
+**Dart:**
+
+```dart
+class Password {
+  String _plainText = 'pass123';
+
+  String get plainText => _plainText;
+  set plainText(String text) => _plainText = text;
+}
+```
+
+**Swift:**
+
+```swift
+class Password {
+  private var _plainText: String = "pass123"
+
+  var plainText: String {
+    get {
+      return _plainText
+    }
+    set {
+      _plainText = newValue
+    }
+  }
+}
+```
+
+**不同點**：Dart 使用 `_` 作為前綴來表示私有變量，並使用 `get` 和 `set` 關鍵字來定義 getter 和 setter。Swift 使用 `private` 關鍵字來定義私有變量，並使用屬性來定義 getter 和 setter。
+
+### 其他注意點
+
+- **Dart** 中的私有變量是針對整個庫（library）私有，而 **Swift** 中的私有變量是針對整個類私有。
+- **Dart** 有 `final` 關鍵字來表示不可變變量，而 **Swift** 使用 `let` 關鍵字。
+
+這些是 Dart 和 Swift 在類別和面向對象編程方面的主要不同之處。
