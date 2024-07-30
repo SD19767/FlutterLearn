@@ -1,154 +1,116 @@
-以下是 Dart 和 Swift 在類別和面向對象編程（OOP）部分的不同之處，並附上中文補充說明：
+# Class
 
-### 定義類別
+class 是一個物件的藍圖，透過實例化做成一個物件。
 
-**Dart:**
+## Constructors
+
+如果不定義，會有預設的 Default constructors.
+
+### constructors
+
+可以使用 this 的語法糖
 
 ```dart
-class User {
-  int id = 0;
-  String name = '';
+class Point {
+  // Initializer list of variables and values
+  double x = 2.0;
+  double y = 2.0;
+
+  // Generative constructor with initializing formal parameters:
+  Point(this.x, this.y);
 }
 ```
 
-**Swift:**
+### Named constructors
 
-```swift
-class User {
-  var id: Int = 0
-  var name: String = ""
+自訂名稱的初始化器
+
+```dart
+const double xOrigin = 0;
+const double yOrigin = 0;
+
+class Point {
+  final double x;
+  final double y;
+
+  // Sets the x and y instance variables
+  // before the constructor body runs.
+  Point(this.x, this.y);
+
+  // Named constructor
+  Point.origin()
+      : x = xOrigin,
+        y = yOrigin;
 }
 ```
 
-**不同點**：Dart 使用 `int` 和 `String` 來定義屬性類型，而 Swift 使用 `Int` 和 `String`。此外，Swift 使用 `var` 關鍵字來定義變數。
+### Constant constructors
 
-### 創建類的實例
-
-**Dart:**
+如果值是常量的話，可以定義常數初始化器
 
 ```dart
-final user = User();
+class ImmutablePoint {
+  static const ImmutablePoint origin = ImmutablePoint(0, 0);
+
+  final double x, y;
+
+  const ImmutablePoint(this.x, this.y);
+}
 ```
 
-**Swift:**
 
-```swift
-let user = User()
-```
+### Redirecting constructors
 
-**不同點**：Dart 使用 `final` 關鍵字來創建不可變變數，而 Swift 使用 `let`。
-
-### 設置屬性值
-
-**Dart:**
+建構函式可能會重定向到同一類中的另一個建構函式。 重定向建構函式有一個空主體。 建構函式使用這個，而不是冒號（:）後面的類名。
 
 ```dart
-user.name = 'Ray';
-user.id = 42;
+class Point {
+  double x, y;
+
+  // The main constructor for this class.
+  Point(this.x, this.y);
+
+  // Delegates to the main constructor.
+  Point.alongXAxis(double x) : this(x, 0);
+}
 ```
 
-**Swift:**
 
-```swift
-user.name = "Ray"
-user.id = 42
-```
+### Factory constructors
 
-**不同點**：Dart 和 Swift 的語法非常相似，但 Swift 使用雙引號來包裹字符串。
 
-### 打印物件
+當遇到以下兩種情況之一時，可以使用 `factory`  關鍵字來實現構造函數：
 
-**Dart:**
+1. **構造函數不一定每次都創建新實例** ：
+
+* **從緩存中返回現有實例** ：工廠構造函數可以根據某些條件返回已經存在的實例，而不是每次都創建新實例。例如，當我們希望實現單例模式（singleton pattern）時，可以使用工廠構造函數。
+* **返回子類的新實例** ：工廠構造函數還可以返回一個子類的新實例，而不一定是當前類的實例。
+
+1. **在構造實例之前需要執行複雜的操作** ：
+
+* **參數檢查或處理** ：在構造實例之前需要對參數進行檢查或進行其他處理，這些操作不能在初始化列表中完成時，可以使用工廠構造函數。
 
 ```dart
-print(user);
-```
+class Logger {
+  final String name;
+  bool mute = false;
 
-**Swift:**
+  // _cache is library-private, thanks to
+  // the _ in front of its name.
+  static final Map<String, Logger> _cache = <String, Logger>{};
 
-```swift
-print(user)
-```
+  factory Logger(String name) {
+    return _cache.putIfAbsent(name, () => Logger._internal(name));
+  }
 
-要在 Swift 中實現自定義的打印輸出，需要覆寫 `description` 屬性：
+  factory Logger.fromJson(Map<String, Object> json) {
+    return Logger(json['name'].toString());
+  }
 
-```swift
-class User: CustomStringConvertible {
-  var id: Int = 0
-  var name: String = ""
+  Logger._internal(this.name);
 
-  var description: String {
-    return "User(id: \(id), name: \(name))"
+  void log(String msg) {
+    if (!mute) print(msg);
   }
 }
 ```
-
-**不同點**：Dart 覆寫 `toString` 方法，而 Swift 通過實現 `CustomStringConvertible` 協議並定義 `description` 屬性來自定義打印輸出。
-
-### JSON 序列化
-
-**Dart:**
-
-```dart
-String toJson() {
-  return '{"id":$id,"name":"$name"}';
-}
-```
-
-**Swift:**
-
-在 Swift 中，可以使用 `Codable` 協議來實現 JSON 序列化：
-
-```swift
-class User: Codable {
-  var id: Int = 0
-  var name: String = ""
-}
-
-let encoder = JSONEncoder()
-if let jsonData = try? encoder.encode(user),
-   let jsonString = String(data: jsonData, encoding: .utf8) {
-    print(jsonString)
-}
-```
-
-**不同點**：Dart 手動實現 JSON 序列化，而 Swift 使用內建的 `Codable` 協議來自動處理序列化和反序列化。
-
-### 封裝（Encapsulation）
-
-**Dart:**
-
-```dart
-class Password {
-  String _plainText = 'pass123';
-
-  String get plainText => _plainText;
-  set plainText(String text) => _plainText = text;
-}
-```
-
-**Swift:**
-
-```swift
-class Password {
-  private var _plainText: String = "pass123"
-
-  var plainText: String {
-    get {
-      return _plainText
-    }
-    set {
-      _plainText = newValue
-    }
-  }
-}
-```
-
-**不同點**：Dart 使用 `_` 作為前綴來表示私有變量，並使用 `get` 和 `set` 關鍵字來定義 getter 和 setter。Swift 使用 `private` 關鍵字來定義私有變量，並使用屬性來定義 getter 和 setter。
-
-### 其他注意點
-
-- **Dart** 中的私有變量是針對整個庫（library）私有，而 **Swift** 中的私有變量是針對整個類私有。
-- **Dart** 有 `final` 關鍵字來表示不可變變量，而 **Swift** 使用 `let` 關鍵字。
-
-這些是 Dart 和 Swift 在類別和面向對象編程方面的主要不同之處。
